@@ -10,6 +10,12 @@ service层分离：https://github.com/ikcamp/koa2-tutorial/tree/4-refactor
 
 详细搭建过程可以看这一篇：[Koa2 从零到脚手架](https://blog.azhubaby.com/2021/08/24/2021-08-24-Koa2%E4%BB%8E%E9%9B%B6%E5%88%B0%E8%84%9A%E6%89%8B%E6%9E%B6/)
 
+Mongoose解决MongoDB弃用警告（DeprecationWarning）https://blog.csdn.net/qq_42760049/article/details/98593923?utm_medium=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-BlogCommendFromBaidu-2
+
+Koa中间件使用之koa-jwt：https://www.jianshu.com/p/2552cdf35e66
+
+koa获取请求参数的三种方法：https://www.jianshu.com/p/4f7877eba40e
+
 ## 其他
 
 koa2安装使用教程：https://www.itying.com/koa/start-install.html

@@ -16,8 +16,31 @@ const auth2 = async (ctx, next) => {
 
 userRouter.post('/', create)
 userRouter.get('/', find)
-userRouter.get('/:id', findById)
+// userRouter.get('/:id', findById)
 userRouter.put('/:id', auth, update)
 userRouter.delete('/:id', auth, del)
+// demo1
+userRouter.get('/demo/:id', (ctx)=>{
+	ctx.status = 200
+	ctx.body = ctx.params
+})
+// demo2
+userRouter.get('/demo2', (ctx)=>{
+	ctx.status = 200
+	ctx.body = ctx.request.query
+})
+// demo3
+userRouter.get('/demo3', (ctx)=>{
+	ctx.status = 200
+	ctx.body = ctx.request.body
+})
+// demo4
+userRouter.get('/demo4', (ctx)=>{
+	console.log("ctx.request.body",ctx.request.body)
+	console.log("ctx.request.query",ctx.request.query)
+	ctx.status = 200
+	ctx.body = ctx.request.query
+})
+
 
 module.exports = userRouter

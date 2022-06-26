@@ -34,20 +34,21 @@ class UserController {
 		ctx.body = model
 	}
 	static async update(ctx) {
-		const userId = ctx.params.id
+		// const userId = ctx.params.id
 
-		assert(userId === ctx.state.user.id, 403, '无权进行此操作')
+		// assert(userId === ctx.state.user.id, 403, '无权进行此操作')
 		const model = await User.findByIdAndUpdate(ctx.params.id, ctx.request.body)
 		ctx.status = 200
 		ctx.body = model
 	}
 	static async delete(ctx) {
-		const userId = ctx.params.id
+		// const userId = ctx.params.id
 
-		assert(userId === ctx.state.user.id, 403, '无权进行此操作')
+		// assert(userId === ctx.state.user.id, 403, '无权进行此操作')
 
-		await User.findByIdAndDelete(ctx.params.id)
-		ctx.status = 204
+		const model =await User.findByIdAndDelete(ctx.params.id)
+		ctx.status = 200
+		ctx.body = model
 	}
 }
 
