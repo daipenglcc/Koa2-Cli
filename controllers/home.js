@@ -13,6 +13,7 @@ class HomeController {
 
 		// 1.根据用户名找用户
 		const user = await User.findOne({ username }).select('+password')
+		// console.log('user', user)
 		assert(user, 422, '用户不存在')
 		// 2.校验密码
 		const isValid = require('bcrypt').compareSync(password, user.password)
