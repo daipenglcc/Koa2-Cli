@@ -16,6 +16,14 @@ Koa中间件使用之koa-jwt：https://www.jianshu.com/p/2552cdf35e66
 
 koa获取请求参数的三种方法：https://www.jianshu.com/p/4f7877eba40e
 
+koa 错误处理中间件 koa-json-error： https://blog.csdn.net/m0_37068028/article/details/99817380
+
+## pm2 启动
+
+全局安装：npm i pm2 -g
+启动: pm2 start index.js
+
+
 ## 其他
 
 koa2安装使用教程：https://www.itying.com/koa/start-install.html

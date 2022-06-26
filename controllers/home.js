@@ -25,4 +25,12 @@ class HomeController {
 	}
 }
 
+// 断言处理
+// if (!user) {
+//   ctx.status = 401
+//   ctx.body = { message: '用户名不存在' }
+// }
+
+// assert(user, 422, '用户不存在')
+
 module.exports = HomeController
