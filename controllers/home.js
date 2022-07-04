@@ -6,7 +6,7 @@ const { JWT_SECRET } = require('../config/')
 
 class HomeController {
 	static home(ctx) {
-		ctx.body = 'hello world'
+		ctx.body = 'hello world, I am build by docker and jenkins'
 	}
 	static async login(ctx) {
 		const { username, password } = ctx.request.body
