@@ -2,6 +2,8 @@ const Router = require('koa-router')
 const cheerio = require('cheerio')
 const charset = require('superagent-charset')
 const superagent = charset(require('superagent'))
+const fs = require('fs')
+const request = require('request')
 const { home, login, register } = require('../controllers/home')
 const router = new Router()
 
@@ -76,7 +78,6 @@ let getData = new Promise((resolve, reject) => {
 			})
 
 			resolve(arr)
-			console.log('arr', arr)
 		})
 })
 
@@ -94,6 +95,31 @@ router.get('/', async ctx => {
 	} catch (err) {
 		console.log(err)
 	}
+})
+
+router.get('/download', async ctx => {
+	// var imgUrl = 'http://www.google.com.hk/images/srpr/logo3w.png'
+	let imgUrl = 'http://s0.hao123img.com/res/img/logo/logonew.png'
+
+	// for (let i = 1; i < 3; i++) {
+	// 	let filename = `test${i}.png`
+	// 	request(imgUrl).pipe(fs.createWriteStream('./images/' + filename))
+	// }
+
+	// request(imgUrl).pipe(fs.createWriteStream('./images/123.png'))
+
+	var writeStream = fs.createWriteStream('image.png')
+	var readStream = request(imgUrl)
+	readStream.pipe(writeStream)
+	readStream.on('end', function (response) {
+		console.log('文件写入成功')
+		writeStream.end()
+	})
+
+	writeStream.on('finish', function () {
+		console.log('ok')
+	})
+	ctx.body = 'download'
 })
 
 router.post('/login', login)
