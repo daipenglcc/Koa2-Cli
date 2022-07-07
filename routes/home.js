@@ -1,6 +1,6 @@
 const Router = require('koa-router')
 const { home, login, register } = require('../controllers/home')
-const { bilibili } = require('../controllers/bilibili')
+const { bilibili, list } = require('../controllers/bilibili')
 const router = new Router()
 
 router.get('/', home)

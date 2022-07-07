@@ -3,16 +3,60 @@ const charset = require('superagent-charset')
 const superagent = charset(require('superagent'))
 const fs = require('fs')
 const request = require('request')
+const chalk = require('chalk')
+const log = console.log
 
 class BilibiliController {
+	// 山东省特产
+	// http://127.0.0.1:3001/bilibili
 	static async bilibili(ctx) {
 		try {
-			let data = await biliData('http://shop.bytravel.cn/produce/index123_list14.html')
-			ctx.body = data
+			let urlList = await list()
+			urlList.forEach(async item => {
+				await biliData('http://shop.bytravel.cn/produce/' + item)
+			})
 		} catch (err) {
-			console.log(err)
+			log(err)
 		}
+		ctx.body = '开始获取...'
 	}
+}
+
+async function list(ctx) {
+	try {
+		let data = await getlist('http://shop.bytravel.cn/produce/index123_list.html')
+		return data
+	} catch (err) {
+		log(err)
+	}
+}
+
+function getlist(baseUrl) {
+	return new Promise((resolve, reject) => {
+		superagent
+			.get(baseUrl)
+			.charset('gb2312') // 当前页面编码格式
+			.buffer(true)
+			.end((err, data) => {
+				let html = data.text
+				let $ = cheerio.load(html, {
+					decodeEntities: false,
+					ignoreWhitespace: false,
+					xmlMode: false,
+					lowerCaseTags: false
+				}) //用cheerio解析页面数据
+
+				let arr = []
+				// cheerio的使用类似jquery的操作
+				$('#list-page li').each((index, element) => {
+					let $element = $(element)
+					$element.find('a').attr('href')
+					arr.push($element.find('a').attr('href'))
+				})
+
+				resolve(arr)
+			})
+	})
 }
 
 function biliData(baseUrl) {
@@ -26,11 +70,10 @@ function biliData(baseUrl) {
 				if (err) {
 					// return next(err);
 					reject(err)
-					console.log('页面不存在', err)
+					log('页面不存在', err)
 				}
 
 				let html = data.text
-				console.log('html', html)
 
 				let $ = cheerio.load(html, {
 					decodeEntities: false,
@@ -53,10 +96,18 @@ function biliData(baseUrl) {
 					//保存图片
 					saveImg($element.find('a.blue14b').text(), $element.find('#bright img').attr('src')).then(
 						data => {
-							console.log('data', data)
+							log(`
+下载成功: ${chalk.green(data.title)}
+成功URL: ${chalk.green(baseUrl)}
+Url: ${chalk.yellow(data.path)}
+							`)
 						},
 						err => {
-							console.log('err', err)
+							log(`
+下载失败: ${chalk.red(data.path)}
+失败URL: ${chalk.red(baseUrl)}
+Error: ${chalk.red(err)}
+							`)
 						}
 					)
 				})
@@ -68,13 +119,16 @@ function biliData(baseUrl) {
 
 function saveImg(title, imgUrl) {
 	return new Promise(resolve => {
-		// let imgUrl2 = imgUrl.split('heads/')[1]
-		var writeStream = fs.createWriteStream(`./images/${title}.png`)
+		let nameSuffix = imgUrl.split('/').pop()
+		var writeStream = fs.createWriteStream(`./images/${title + nameSuffix}`)
 		var readStream = request(imgUrl)
 		readStream.pipe(writeStream)
 		readStream.on('end', function (response) {
 			writeStream.end()
-			resolve('文件写入成功')
+			resolve({
+				title: title + nameSuffix,
+				path: imgUrl
+			})
 		})
 	})
 }
